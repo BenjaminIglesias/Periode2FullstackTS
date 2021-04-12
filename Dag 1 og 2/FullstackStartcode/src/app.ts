@@ -1,4 +1,3 @@
-
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config()
@@ -14,12 +13,18 @@ app.use((request,response,next)=> {
 
 app.use(express.static(path.join(process.cwd(), "public")))
 
+
+
 app.use("/api/friends", friendsRoutes )
 
+import authMiddleware from "./middelware/basic-auth"
+app.use("/demo", authMiddleware)
 
 app.get("/demo", (req, res) => {
   res.send("Server is up!!");
 })
+
+
 
 
 export default app;

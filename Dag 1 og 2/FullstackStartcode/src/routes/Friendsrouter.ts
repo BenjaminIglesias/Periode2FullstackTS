@@ -4,6 +4,8 @@ import { IFriend } from '../interfaces/IFriend';
 const Joi = require('joi');
 
 import facade from "../facades/DummyDB-Facade"
+import authMiddleware from "../middelware/basic-auth"
+router.use("/", authMiddleware)
 
 //get methods 
 router.get("/all", async (req: any, res) => {
@@ -20,7 +22,7 @@ router.get("/findby-username/:userid", async (req, res, next) => {
   try {
     const friend = await facade.getFriend(userId);
     if (friend == null) {
-      throw new Error("user not found")
+      return next(new Error("user not found"))
     }
     const { firstName, lastName, email } = friend;
     const friendDTO = { firstName, lastName, email }
